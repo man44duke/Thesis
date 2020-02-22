@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582384077817.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "46961680",
+    "lastKnownWriteTime" : 1581986417,
+    "last_content_update" : 1582384077817,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "E5442511",
+        "caption" : "tract_data_census",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=tract_data_census&cache_key=E5442511",
+        "displayedObservations" : "72253",
+        "environment" : "",
+        "expression" : "tract_data_census",
+        "object" : "tract_data_census",
+        "preview" : "0",
+        "totalObservations" : "72253",
+        "variables" : "74"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

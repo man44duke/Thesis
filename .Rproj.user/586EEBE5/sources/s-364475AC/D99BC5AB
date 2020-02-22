@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1578839314312.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D99BC5AB",
+    "lastKnownWriteTime" : 1582384840,
+    "last_content_update" : 1582384840022,
+    "path" : "C:/Users/goutm/Desktop/Thesis/Code/Tract Analysis/Tract Regression.R",
+    "project_path" : "Code/Tract Analysis/Tract Regression.R",
+    "properties" : {
+        "cursorPosition" : "54,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
