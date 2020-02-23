@@ -3,6 +3,7 @@
 ###################################
 
 library('RPostgreSQL')
+library('tidyverse')
 
 pg = dbDriver("PostgreSQL")
 
@@ -14,7 +15,7 @@ con = dbConnect(pg, user="postgres", password="Mich@el98",
 #######################################
 queries <- c()
 queries <- c(queries, "Select  census_tract, median(income) as average_income", "Select  census_tract, ((count(*) filter (where action_taken = 3))::decimal  / count(*)) as percent_denied")
-queries <- c(queries,  "Select  census_tract, median(loan_amount) as loan_amount")
+queries <- c(queries,  "Select  census_tract, median(loan_amount::integer) as loan_amount")
 queries <- c(queries, "Select  census_tract, median(interest_rate::decimal) filter (where interest_rate != 'Exempt') as interest_rate", "Select  census_tract, median(rate_spread::decimal) filter (where rate_spread != 'Exempt') as rate_spread")
 queries <- c(queries,"Select  census_tract, ((count(*) filter (where hoepa_status = 1))::decimal  / count(*)) as hoepa_status", "Select  census_tract, median(total_loan_costs::decimal) filter (where total_loan_costs != 'Exempt') as total_loan_costs" )
 queries <- c(queries, "Select  census_tract, median(total_points_and_fees::decimal) filter (where total_points_and_fees != 'Exempt') as total_points_and_fees", "Select  census_tract, median(origination_charges::decimal) filter (where origination_charges != 'Exempt') as origination_charges")
@@ -200,6 +201,20 @@ tract.employment$census_tract <- as.numeric(tract.employment$census_tract)
 
 tract.data <- merge(x=tract.data, y=tract.employment, by = "census_tract", all.x = TRUE)
 
+#################33
+# Black rate spreads
+##################
+query.rate_spread_black <- 
+  paste0("Select  census_tract, avg(rate_spread::decimal) filter (where rate_spread != ","'Exempt'",") as rate_spread_black
+   FROM home
+   Where race = ","'Black or African American'","
+   Group by census_tract;")
+tract.rate_spread_black <- dbGetQuery(con, query.rate_spread_black)
+tract.rate_spread_black$census_tract <- as.numeric(tract.rate_spread_black$census_tract)
+
+tract.data <- merge(x=tract.data, y=tract.rate_spread_black, by = "census_tract", all.x = TRUE)
+
+
 ####################################
 # Majority Black Binary Varible
 #################################
@@ -212,7 +227,6 @@ tract.data$black_25[tract.data$percent_population_black >= .25] = 1
 ####################################
 # Majority white Binary Varible
 #################################
-tract.data <- tract_data_census
 
 tract.data$majority_white = 0
 tract.data$majority_white[tract.data$percent_population_white >= .5] = 1 
@@ -234,4 +248,10 @@ tract.data$msa_median_income = tract.data$msa_median_income /1000
 tract.data$property_value = tract.data$property_value /1000
 tract.data$tract_msa_income_percentage = tract.data$tract_msa_income_percentage/100
 
-saveRDS(tract.data, file = "tract_data_census.RDS")
+tract_data_census <- readRDS("RData/Tract/tract_data_census.RDS")
+tract_data_subset <- tract_data_census %>% select(Total_population:Percent_snap)
+tract_data_subset$census_tract <- tract_data_census$census_tract
+
+tract.data <- merge(x=tract.data, y=tract_data_subset, by = "census_tract", all.x = TRUE)
+
+saveRDS(tract.data, file = "tract_data_median.RDS")

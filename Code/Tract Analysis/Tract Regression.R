@@ -21,8 +21,8 @@ data <- tract_data_median
 data <- tract_data_30
 data <- tract_data_not30
 ############################
-
-
+subset = data[which(data$average_income < 96),]
+quantile(data$average_income, na.rm = TRUE, c(.95))
 ############################
 #Rate Spread
 ###########################
@@ -107,15 +107,14 @@ regressSpread.weighted <- plm(rate_spreadX ~ majority_black + average_income  + 
 regressSpread <- lm(rate_spread ~ . -census_tract - mode_lender - percent_population_black - percent_population_white, data = data)
 
 summary(regressSpread.county.census)
-plot(regressSpread)
-plm::pFtest(regressSpread.county, regressSpread.county.census)
+plot(regressSpread.county.census)
 ###################################
 
 ################################
 # Random analysis
 ################################
 
-stargazer(regressSpread.county.white, regressSpread.county.25, regressSpread.county.prop,  type = "text", omit= c("mode_lender", "county_code", "factor"))
+stargazer(regressSpread.county, regressSpread.county.census,  type = "text", omit= c("mode_lender", "county_code", "factor"))
 
 saveRDS(regressSpread.both, file = "regress_spreads_both.RDS")
 ################################
